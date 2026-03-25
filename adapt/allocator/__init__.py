@@ -1,0 +1,3 @@
+"""
+ADAPT allocator package.
+"""

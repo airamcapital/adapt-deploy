@@ -1,0 +1,7 @@
+touch ~/Desktop/ADAPT_DEPLOY/analytics/performance_tables.py
+nano ~/Desktop/ADAPT_DEPLOY/analytics/performance_tables.py
+mkdir -p ~/Desktop/ADAPT_DEPLOY/analytics
+touch ~/Desktop/ADAPT_DEPLOY/analytics/benchmarks.py
+touch ~/Desktop/ADAPT_DEPLOY/analytics/performance_tables.py
+ls -R ~/Desktop/ADAPT_DEPLOY
+

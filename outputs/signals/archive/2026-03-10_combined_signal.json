@@ -1,0 +1,32 @@
+{
+  "date": "2026-03-10",
+  "strategy": "ADAPT_COMBINED_DYNAMIC",
+  "allocator_state": "risk_off",
+  "core_weight": 0.8,
+  "alpha_weight": 0.2,
+  "core_regime": 4,
+  "alpha_in_market": false,
+  "daily_return": -0.003826887356594551,
+  "equity_value": 1199953.1101026726,
+  "drawdown": -0.058539454029092886,
+  "target_allocation": {
+    "TLT": 0.08,
+    "BIL": 0.32,
+    "BTAL": 0.16,
+    "USMV": 0.16,
+    "UUP": 0.08,
+    "CASH": 0.19999999999999996
+  },
+  "metrics": {
+    "cagr": 0.2599369264432376,
+    "maxdd": -0.22348164614644106,
+    "sharpe": 1.2324758423163735,
+    "calmar": 1.1631242696006834,
+    "final_value": 1199953.1101026726,
+    "years": 13.753968253968255,
+    "risk_on_pct": 0.11107905366416619,
+    "neutral_pct": 0.5432775533756492,
+    "risk_off_pct": 0.34564339296018465
+  },
+  "written_at": "2026-03-11T17:19:53.777621"
+}

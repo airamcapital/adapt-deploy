@@ -1,0 +1,15 @@
+name: "ADAPT_ALPHA_STRUCTURE"
+
+parameters:
+  transaction_cost: 0.0002
+  swing_left: 2
+  swing_right: 2
+
+signals:
+  entry: "bullish_bos1"
+  exit: "bearish_choch"
+
+execution:
+  long_asset: "TQQQ"
+  benchmark_asset: "SPY"
+  signal_asset: "QQQ"

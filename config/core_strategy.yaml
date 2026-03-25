@@ -1,0 +1,33 @@
+name: "ADAPT_CORE"
+
+parameters:
+  sma_period: 150
+  rsi_period: 40
+  consec_days: 2
+  transaction_cost: 0.0002
+  drawdown_threshold: -0.10
+  drawdown_recovery: 0.05
+
+thresholds:
+  rsi_oversold: 45
+  rsi_overbought: 85
+  high_rate_start: "2022-03-17"
+
+weights:
+  r3_tqqq_min: 0.40
+  r3_tqqq_max: 0.80
+
+baskets:
+  r4_low:
+    TLT: 0.20
+    BIL: 0.20
+    BTAL: 0.20
+    USMV: 0.20
+    UUP: 0.20
+
+  r4_high:
+    TLT: 0.10
+    BIL: 0.40
+    BTAL: 0.20
+    USMV: 0.20
+    UUP: 0.10

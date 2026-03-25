@@ -1,0 +1,42 @@
+project:
+  name: "ADAPT_DEPLOY"
+  timezone: "America/Toronto"
+
+data:
+  start_date: "2011-10-20"
+  source: "yfinance"
+  auto_adjust: true
+  use_cache: true
+  cache_dir: "data/cache"
+  snapshot_dir: "data/snapshots"
+
+execution:
+  model: "close_signal_next_day_return"
+  transaction_cost: 0.0002
+
+portfolio:
+  start_value: 50000.0
+
+paths:
+  state_dir: "state"
+  signals_dir: "outputs/signals"
+  reports_dir: "outputs/reports"
+  logs_dir: "outputs/logs"
+
+tickers:
+  core:
+    - TQQQ
+    - SQQQ
+    - TLT
+    - BIL
+    - BTAL
+    - USMV
+    - UUP
+    - LQD
+    - IAU
+    - SPY
+  alpha:
+    - QQQ
+    - TQQQ
+    - SQQQ
+    - SPY

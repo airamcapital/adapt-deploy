@@ -1,0 +1,12 @@
+{
+  "date": "2026-03-10",
+  "strategy": "ADAPT_CORE",
+  "allocation": {
+    "TLT": 0.1,
+    "BIL": 0.4,
+    "BTAL": 0.2,
+    "USMV": 0.2,
+    "UUP": 0.1
+  },
+  "written_at": "2026-03-11T17:19:53.778906"
+}

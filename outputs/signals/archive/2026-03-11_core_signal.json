@@ -1,0 +1,31 @@
+{
+  "date": "2026-03-11",
+  "strategy": "ADAPT_CORE",
+  "signal_regime": 4,
+  "signal_regime_text": "R4 (defensive)",
+  "is_trade": false,
+  "daily_return": -0.00366569885706971,
+  "equity_value": 218311.73174478638,
+  "drawdown": -0.042622877715840835,
+  "close": 49.349998474121094,
+  "sma": 51.41643915812175,
+  "rsi": 47.89147680275352,
+  "consec_up": 0,
+  "target_allocation": {
+    "TLT": 0.1,
+    "BIL": 0.4,
+    "BTAL": 0.2,
+    "USMV": 0.2,
+    "UUP": 0.1
+  },
+  "metrics": {
+    "cagr": 0.11308001812928836,
+    "maxdd": -0.2425321438882332,
+    "sharpe": 1.00012579346448,
+    "calmar": 0.4662475510108028,
+    "final_value": 218311.73174478638,
+    "trades": 639,
+    "years": 13.757936507936508
+  },
+  "written_at": "2026-03-12T02:36:21.416652"
+}

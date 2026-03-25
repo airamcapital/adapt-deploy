@@ -1,0 +1,87 @@
+from __future__ import annotations
+
+import numpy as np
+import pandas as pd
+
+
+def mark_swings(
+    df: pd.DataFrame,
+    left: int = 2,
+    right: int = 2,
+) -> pd.DataFrame:
+    out = df.copy()
+
+    high_cond = pd.Series(True, index=out.index)
+    low_cond = pd.Series(True, index=out.index)
+
+    for i in range(1, left + 1):
+        high_cond &= out["High"] > out["High"].shift(i)
+        low_cond &= out["Low"] < out["Low"].shift(i)
+
+    for i in range(1, right + 1):
+        high_cond &= out["High"] > out["High"].shift(-i)
+        low_cond &= out["Low"] < out["Low"].shift(-i)
+
+    out["swing_high"] = high_cond.fillna(False)
+    out["swing_low"] = low_cond.fillna(False)
+    return out
+
+
+def build_structure_signals(
+    df: pd.DataFrame,
+    left: int = 2,
+    right: int = 2,
+) -> pd.DataFrame:
+    out = mark_swings(df, left=left, right=right)
+
+    last_swing_high = np.nan
+    last_swing_low = np.nan
+    structure_state = "neutral"
+    bos_count_since_choch = 0
+
+    rows = []
+
+    for i in range(len(out)):
+        row = out.iloc[i]
+        close = float(row["Close"])
+        high = float(row["High"])
+        low = float(row["Low"])
+
+        if bool(row["swing_high"]):
+            last_swing_high = high
+        if bool(row["swing_low"]):
+            last_swing_low = low
+
+        bullish_choch = False
+        bullish_bos1 = False
+        bearish_choch = False
+
+        if not np.isnan(last_swing_high) and close > last_swing_high:
+            if structure_state in ("bearish", "neutral"):
+                bullish_choch = True
+                structure_state = "bullish"
+                bos_count_since_choch = 0
+            elif structure_state == "bullish":
+                bos_count_since_choch += 1
+                if bos_count_since_choch == 1:
+                    bullish_bos1 = True
+
+        if not np.isnan(last_swing_low) and close < last_swing_low:
+            if structure_state == "bullish":
+                bearish_choch = True
+            structure_state = "bearish"
+            bos_count_since_choch = 0
+
+        rows.append(
+            {
+                "bullish_choch": bullish_choch,
+                "bullish_bos1": bullish_bos1,
+                "bearish_choch": bearish_choch,
+                "structure_state": structure_state,
+                "last_swing_high": last_swing_high,
+                "last_swing_low": last_swing_low,
+            }
+        )
+
+    sig = pd.DataFrame(rows, index=out.index)
+    return pd.concat([out, sig], axis=1)

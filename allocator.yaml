@@ -1,0 +1,14 @@
+name: "ADAPT_COMBINED_DYNAMIC"
+
+weights:
+  risk_on:
+    core: 0.40
+    alpha: 0.60
+
+  neutral:
+    core: 0.70
+    alpha: 0.30
+
+  risk_off:
+    core: 0.80
+    alpha: 0.20

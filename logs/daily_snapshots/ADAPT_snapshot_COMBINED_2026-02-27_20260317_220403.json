@@ -1,0 +1,189 @@
+{
+  "run_timestamp": "2026-03-17 22:04:03",
+  "run_timestamp_utc": "2026-03-17 22:04:03",
+  "strategy": "COMBINED",
+  "start_date": "2022-01-01",
+  "end_date": "2026-02-27",
+  "execution_mode": "Fractional Shares",
+  "latest_finalized_bar_date": "2026-02-27",
+  "allocator_state": "Risk Off",
+  "rebalance_required_today": true,
+  "latest_trade_date": "2026-02-27",
+  "ticket_count": 6,
+  "ticket_notional": "$41,670.70",
+  "commission_mode": "Tiered",
+  "estimated_slippage_bps": 5.0,
+  "estimated_commission": "$4.08",
+  "estimated_slippage": "$20.84",
+  "execution_cost_estimate": "$24.91",
+  "target_allocation": [
+    {
+      "Asset": "BIL",
+      "Weight": "32.0%"
+    },
+    {
+      "Asset": "CASH",
+      "Weight": "20.0%"
+    },
+    {
+      "Asset": "USMV",
+      "Weight": "16.0%"
+    },
+    {
+      "Asset": "BTAL",
+      "Weight": "16.0%"
+    },
+    {
+      "Asset": "TLT",
+      "Weight": "8.0%"
+    },
+    {
+      "Asset": "UUP",
+      "Weight": "8.0%"
+    }
+  ],
+  "today_trade_tickets": [
+    {
+      "Date": "2026-02-27",
+      "State": "Risk Off",
+      "Action": "BUY",
+      "Symbol": "BIL",
+      "Shares": "47.9448",
+      "Close Price": "91.3770",
+      "Estimated Notional": "$4,381.05",
+      "Instruction": "BUY 47.9448 BIL @ close (91.3770)"
+    },
+    {
+      "Date": "2026-02-27",
+      "State": "Risk Off",
+      "Action": "BUY",
+      "Symbol": "BTAL",
+      "Shares": "134.5993",
+      "Close Price": "14.0800",
+      "Estimated Notional": "$1,895.16",
+      "Instruction": "BUY 134.5993 BTAL @ close (14.0800)"
+    },
+    {
+      "Date": "2026-02-27",
+      "State": "Risk Off",
+      "Action": "BUY",
+      "Symbol": "TLT",
+      "Shares": "11.6223",
+      "Close Price": "90.5190",
+      "Estimated Notional": "$1,052.04",
+      "Instruction": "BUY 11.6223 TLT @ close (90.5190)"
+    },
+    {
+      "Date": "2026-02-27",
+      "State": "Risk Off",
+      "Action": "SELL",
+      "Symbol": "TQQQ",
+      "Shares": "630.0475",
+      "Close Price": "49.5200",
+      "Estimated Notional": "$31,199.95",
+      "Instruction": "SELL 630.0475 TQQQ @ close (49.5200)"
+    },
+    {
+      "Date": "2026-02-27",
+      "State": "Risk Off",
+      "Action": "BUY",
+      "Symbol": "USMV",
+      "Shares": "20.8588",
+      "Close Price": "97.8100",
+      "Estimated Notional": "$2,040.20",
+      "Instruction": "BUY 20.8588 USMV @ close (97.8100)"
+    },
+    {
+      "Date": "2026-02-27",
+      "State": "Risk Off",
+      "Action": "BUY",
+      "Symbol": "UUP",
+      "Shares": "40.7053",
+      "Close Price": "27.0800",
+      "Estimated Notional": "$1,102.30",
+      "Instruction": "BUY 40.7053 UUP @ close (27.0800)"
+    }
+  ],
+  "latest_prices": [
+    {
+      "Date": "2026-02-27",
+      "State": "Risk Off",
+      "Symbol": "BIL",
+      "Close Price": 91.376999,
+      "Shares Held": 370.105139,
+      "Market Value": 33819.1
+    },
+    {
+      "Date": "2026-02-27",
+      "State": "Risk Off",
+      "Symbol": "BTAL",
+      "Close Price": 14.08,
+      "Shares Held": 1200.962254,
+      "Market Value": 16909.55
+    },
+    {
+      "Date": "2026-02-27",
+      "State": "Risk Off",
+      "Symbol": "TLT",
+      "Close Price": 90.518997,
+      "Shares Held": 93.403313,
+      "Market Value": 8454.77
+    },
+    {
+      "Date": "2026-02-27",
+      "State": "Risk Off",
+      "Symbol": "USMV",
+      "Close Price": 97.809998,
+      "Shares Held": 172.881596,
+      "Market Value": 16909.55
+    },
+    {
+      "Date": "2026-02-27",
+      "State": "Risk Off",
+      "Symbol": "UUP",
+      "Close Price": 27.08,
+      "Shares Held": 312.214706,
+      "Market Value": 8454.77
+    },
+    {
+      "Date": "2026-02-27",
+      "State": "Risk Off",
+      "Symbol": "CASH",
+      "Close Price": 1.0,
+      "Shares Held": 21136.93555,
+      "Market Value": 21136.94
+    }
+  ],
+  "operational_checklist": [
+    {
+      "Check": "Latest bar finalized",
+      "Status": "Yes",
+      "Detail": "2026-02-27"
+    },
+    {
+      "Check": "Allocator state confirmed",
+      "Status": "Yes",
+      "Detail": "Risk Off"
+    },
+    {
+      "Check": "Execution mode confirmed",
+      "Status": "Yes",
+      "Detail": "Fractional Shares"
+    },
+    {
+      "Check": "Rebalance required today",
+      "Status": "Yes",
+      "Detail": "2026-02-27"
+    },
+    {
+      "Check": "Trade tickets ready",
+      "Status": "Yes",
+      "Detail": "6 ticket(s)"
+    },
+    {
+      "Check": "Execution cost estimate",
+      "Status": "Ready",
+      "Detail": "$24.91 (Tiered | 5.0 bps)"
+    }
+  ]
+}

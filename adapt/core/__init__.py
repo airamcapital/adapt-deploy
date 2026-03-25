@@ -1,0 +1,3 @@
+"""
+ADAPT core strategy package.
+"""

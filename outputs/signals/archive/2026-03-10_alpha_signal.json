@@ -1,0 +1,28 @@
+{
+  "date": "2026-03-10",
+  "strategy": "ADAPT_ALPHA_STRUCTURE",
+  "signal": "hold",
+  "is_trade": false,
+  "daily_return": 0.0,
+  "equity_value": 3758656.5406222525,
+  "drawdown": -0.11229001723706633,
+  "weight": 0.0,
+  "target_weight": 0.0,
+  "bullish_choch": false,
+  "bullish_bos1": false,
+  "bearish_choch": false,
+  "target_allocation": {
+    "CASH": 1.0
+  },
+  "metrics": {
+    "cagr": 0.351386170436514,
+    "maxdd": -0.43480950983778666,
+    "sharpe": 1.0205695202144356,
+    "calmar": 0.8081381903712381,
+    "final_value": 3758656.5406222525,
+    "trades": 114,
+    "years": 14.345238095238095,
+    "time_in_market": 0.603042876901798
+  },
+  "written_at": "2026-03-11T17:19:53.777352"
+}

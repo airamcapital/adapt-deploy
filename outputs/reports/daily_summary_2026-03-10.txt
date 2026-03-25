@@ -1,0 +1,44 @@
+ADAPT DAILY SUMMARY — 2026-03-10
+========================================================================
+
+CORE
+------------------------------------------------------------------------
+Regime: R4 (defensive)
+Close: 49.35
+SMA150: 51.42
+RSI: 47.89
+Consecutive up days: 0
+Target allocation: TLT 10.0%, BIL 40.0%, BTAL 20.0%, USMV 20.0%, UUP 10.0%
+Equity value: $218,311.73
+Drawdown: -4.26%
+
+ALPHA
+------------------------------------------------------------------------
+Signal: hold
+In market: no
+Current weight: 0%
+Target allocation: CASH 100.0%
+Bullish BoS1 today: False
+Bearish ChoC today: False
+Equity value: $3,758,656.54
+Drawdown: -11.23%
+
+COMBINED_DYNAMIC
+------------------------------------------------------------------------
+Allocator state: risk_off
+Posture: risk_off posture — CORE 80% / ALPHA 20%
+Target allocation: TLT 8.0%, BIL 32.0%, BTAL 16.0%, USMV 16.0%, UUP 8.0%, CASH 20.0%
+Equity value: $1,199,953.11
+Drawdown: -5.85%
+
+FILES WRITTEN
+------------------------------------------------------------------------
+Latest core JSON: outputs/signals/core_signal_latest.json
+Latest alpha JSON: outputs/signals/alpha_signal_latest.json
+Latest combined JSON: outputs/signals/combined_signal_latest.json
+Latest core allocation JSON: outputs/signals/core_allocation_latest.json
+Latest alpha allocation JSON: outputs/signals/alpha_allocation_latest.json
+Latest combined allocation JSON: outputs/signals/combined_allocation_latest.json
+Archived core JSON: outputs/signals/archive/2026-03-10_core_signal.json
+Archived alpha JSON: outputs/signals/archive/2026-03-10_alpha_signal.json
+Archived combined JSON: outputs/signals/archive/2026-03-10_combined_signal.json

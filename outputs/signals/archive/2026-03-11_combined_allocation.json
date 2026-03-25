@@ -1,0 +1,13 @@
+{
+  "date": "2026-03-11",
+  "strategy": "ADAPT_COMBINED_DYNAMIC",
+  "allocation": {
+    "TLT": 0.05,
+    "BIL": 0.2,
+    "BTAL": 0.1,
+    "USMV": 0.1,
+    "UUP": 0.05,
+    "TQQQ": 0.5
+  },
+  "written_at": "2026-03-12T02:36:21.419313"
+}

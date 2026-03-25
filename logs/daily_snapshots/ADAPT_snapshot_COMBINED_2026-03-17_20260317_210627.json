@@ -1,0 +1,124 @@
+{
+  "run_timestamp": "2026-03-17 21:06:27",
+  "run_timestamp_utc": "2026-03-17 21:06:27",
+  "strategy": "COMBINED",
+  "start_date": "2012-05-25",
+  "end_date": "2026-03-17",
+  "execution_mode": "Fractional Shares",
+  "latest_finalized_bar_date": "2026-03-17",
+  "allocator_state": "Risk Off",
+  "rebalance_required_today": false,
+  "latest_trade_date": "2026-03-17",
+  "ticket_count": 0,
+  "ticket_notional": "$0.00",
+  "execution_cost_estimate": "Pending",
+  "target_allocation": [
+    {
+      "Asset": "BIL",
+      "Weight": "32.0%"
+    },
+    {
+      "Asset": "CASH",
+      "Weight": "20.0%"
+    },
+    {
+      "Asset": "USMV",
+      "Weight": "16.0%"
+    },
+    {
+      "Asset": "BTAL",
+      "Weight": "16.0%"
+    },
+    {
+      "Asset": "TLT",
+      "Weight": "8.0%"
+    },
+    {
+      "Asset": "UUP",
+      "Weight": "8.0%"
+    }
+  ],
+  "today_trade_tickets": [],
+  "latest_prices": [
+    {
+      "Date": "2026-03-17",
+      "State": "Risk Off",
+      "Symbol": "BIL",
+      "Close Price": 91.519997,
+      "Shares Held": 4545.626907,
+      "Market Value": 416015.76
+    },
+    {
+      "Date": "2026-03-17",
+      "State": "Risk Off",
+      "Symbol": "BTAL",
+      "Close Price": 14.09,
+      "Shares Held": 14443.41455,
+      "Market Value": 203507.71
+    },
+    {
+      "Date": "2026-03-17",
+      "State": "Risk Off",
+      "Symbol": "TLT",
+      "Close Price": 87.449997,
+      "Shares Held": 1201.670683,
+      "Market Value": 105086.1
+    },
+    {
+      "Date": "2026-03-17",
+      "State": "Risk Off",
+      "Symbol": "USMV",
+      "Close Price": 95.089996,
+      "Shares Held": 2187.705529,
+      "Market Value": 208028.91
+    },
+    {
+      "Date": "2026-03-17",
+      "State": "Risk Off",
+      "Symbol": "UUP",
+      "Close Price": 27.68,
+      "Shares Held": 3728.66921,
+      "Market Value": 103209.56
+    },
+    {
+      "Date": "2026-03-17",
+      "State": "Risk Off",
+      "Symbol": "CASH",
+      "Close Price": 1.0,
+      "Shares Held": 259981.455007,
+      "Market Value": 259981.46
+    }
+  ],
+  "operational_checklist": [
+    {
+      "Check": "Latest bar finalized",
+      "Status": "Yes",
+      "Detail": "2026-03-17"
+    },
+    {
+      "Check": "Allocator state confirmed",
+      "Status": "Yes",
+      "Detail": "Risk Off"
+    },
+    {
+      "Check": "Execution mode confirmed",
+      "Status": "Yes",
+      "Detail": "Fractional Shares"
+    },
+    {
+      "Check": "Rebalance required today",
+      "Status": "No",
+      "Detail": "2026-03-17"
+    },
+    {
+      "Check": "Trade tickets ready",
+      "Status": "No",
+      "Detail": "0 ticket(s)"
+    },
+    {
+      "Check": "Execution cost estimate",
+      "Status": "Pending",
+      "Detail": "Reserved display slot; no new cost model added"
+    }
+  ]
+}

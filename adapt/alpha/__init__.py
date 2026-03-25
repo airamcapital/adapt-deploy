@@ -1,0 +1,3 @@
+"""
+ADAPT alpha strategy package.
+"""
