@@ -1761,6 +1761,15 @@ else:
 
 st.markdown("---")
 st.markdown(
+    "**ADAPT — Asymmetric Dynamic Allocation with Protected Trend**",
+)
+st.markdown(
+    "ADAPT is a rules-based trading strategy that automatically shifts between aggressive growth and capital protection "
+    "depending on market conditions. When markets are trending well, it leans into leveraged growth. When signals turn "
+    "bearish or a drawdown hits, it retreats into a defensive basket of uncorrelated assets. "
+    "The goal is simple — capture the upside, protect the downside."
+)
+st.markdown(
     "<small>This Institutional Strategy for TQQQ was developed as a proprietary program by Airam Capital and Red Rock Fund. "
     "It is exclusively for personal use. Unauthorized use is prohibited without a license agreement.</small>",
     unsafe_allow_html=True,
