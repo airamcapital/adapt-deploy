@@ -1758,3 +1758,10 @@ if run:
     st.dataframe(dark_dataframe(yearly_df, hide_index=False), width="stretch")
 else:
     st.info("Run Backtest to load the polished dashboard.")
+
+st.markdown("---")
+st.markdown(
+    "<small>This Institutional Strategy for TQQQ was developed as a proprietary program by Airam Capital and Red Rock Fund. "
+    "It is exclusively for personal use. Unauthorized use is prohibited without a license agreement.</small>",
+    unsafe_allow_html=True,
+)
