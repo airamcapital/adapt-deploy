@@ -1757,7 +1757,7 @@ if run:
     st.markdown("#### Yearly Returns (%)")
     st.dataframe(dark_dataframe(yearly_df, hide_index=False), width="stretch")
 else:
-    st.info("Run Backtest to load the polished dashboard.")
+    st.info("Run Backtest by clicking the arrow on top left corner to open & close the dashboard on left side of page. Here you can input your personal variables.")
 
 st.markdown("---")
 st.markdown(
