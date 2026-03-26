@@ -21,6 +21,16 @@ div.stDownloadButton > button:hover {
     color: #ffffff;
     border: 1px solid #4da6ff;
 }
+div.stButton > button {
+    background-color: #1a1a2e;
+    color: #4da6ff;
+    border: 1px solid #4da6ff;
+}
+div.stButton > button:hover {
+    background-color: #4da6ff;
+    color: #ffffff;
+    border: 1px solid #4da6ff;
+}
 </style>
 """, unsafe_allow_html=True)
 import yfinance as yf
