@@ -8,6 +8,21 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
+
+st.markdown("""
+<style>
+div.stDownloadButton > button {
+    background-color: #1a1a2e;
+    color: #4da6ff;
+    border: 1px solid #4da6ff;
+}
+div.stDownloadButton > button:hover {
+    background-color: #4da6ff;
+    color: #ffffff;
+    border: 1px solid #4da6ff;
+}
+</style>
+""", unsafe_allow_html=True)
 import yfinance as yf
 from plotly.subplots import make_subplots
 
