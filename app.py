@@ -1774,3 +1774,11 @@ st.markdown(
     "It is exclusively for personal use. Unauthorized use is prohibited without a license agreement.</small>",
     unsafe_allow_html=True,
 )
+
+with open("ADAPT_Whitepaper.pdf", "rb") as f:
+    st.download_button(
+        label="Download here for ADAPT White Paper",
+        data=f,
+        file_name="ADAPT_Whitepaper.pdf",
+        mime="application/pdf",
+    )
