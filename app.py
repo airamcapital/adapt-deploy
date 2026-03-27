@@ -1653,7 +1653,8 @@ if run:
     r1c1, r1c2 = st.columns(2)
     with r1c1:
         a1, a2 = st.columns(2)
-        a1.markdown(metric_card_html("CAGR", f"{perf['cagr']:.2%}", [f"{perf['days']:,} trading days", 'Calculated from df["ret"]']), unsafe_allow_html=True)
+        total_return = (eq_series.iloc[-1] / eq_series.iloc[0]) - 1
+        a1.markdown(metric_card_html("CAGR", f"{perf['cagr']:.2%}", [f"{perf['days']:,} trading days", f"Total Return {total_return:.2%}"]), unsafe_allow_html=True)
         a2.markdown(metric_card_html("Max Drawdown", f"{perf['maxdd']:.2%}", [f"Ulcer Index {ulcer:.2%}", "Recovery metrics below"]), unsafe_allow_html=True)
     with r1c2:
         a3, a4 = st.columns(2)
