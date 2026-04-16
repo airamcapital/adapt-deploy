@@ -560,7 +560,7 @@ def get_state_series(strategy_name: str, df: pd.DataFrame) -> pd.Series:
     return pd.Series(index=df.index, dtype=object)
 
 
-def build_trade_reconstruction(strategy_name: str, df: pd.DataFrame, portfolio_value_series: pd.Series, execution_mode: str = "Fractional Shares") -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+def build_trade_reconstruction(strategy_name: str, df: pd.DataFrame, portfolio_value_series: pd.Series, execution_mode: str = "Fractional Shares", start_capital: float = 50000.0) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     alloc_df = build_allocation_frame(strategy_name, df)
     if alloc_df.empty:
         empty = pd.DataFrame()
@@ -582,7 +582,8 @@ def build_trade_reconstruction(strategy_name: str, df: pd.DataFrame, portfolio_v
 
     for dt in rebalance_dates:
         prices_row = px.loc[dt] if not px.empty else pd.Series(dtype=float)
-        portfolio_before = float(portfolio_value_series.loc[dt])
+        idx_pos = portfolio_value_series.index.get_loc(dt)
+        portfolio_before = float(portfolio_value_series.iloc[idx_pos - 1]) if idx_pos > 0 else float(start_capital)
 
         prev_values = {sym: shares.get(sym, 0.0) * float(prices_row.get(sym, np.nan)) for sym in traded_symbols}
         known_prev_total = float(sum(v for v in prev_values.values() if pd.notna(v)) + cash_balance)
@@ -1601,7 +1602,7 @@ if run:
 
 
     eq_series, dd_series, total_contrib = equity_with_contributions(df["ret"], start_capital, contribution_amount, contribution_frequency)
-    trade_detail_df, trade_summary_df, final_positions_df = build_trade_reconstruction(strategy, df, eq_series, execution_mode)
+    trade_detail_df, trade_summary_df, final_positions_df = build_trade_reconstruction(strategy, df, eq_series, execution_mode, start_capital)
     trade_detail_fmt, trade_summary_fmt, final_positions_fmt = format_trade_reconstruction(
         trade_detail_df, trade_summary_df, final_positions_df
     )
