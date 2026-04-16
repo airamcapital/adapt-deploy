@@ -560,6 +560,97 @@ def get_state_series(strategy_name: str, df: pd.DataFrame) -> pd.Series:
     return pd.Series(index=df.index, dtype=object)
 
 
+def build_cash_positioning_analysis(strategy_name: str, df: pd.DataFrame) -> tuple:
+    """Build yearly cash positioning analysis with rule-based commentary."""
+    import pandas as pd
+    alloc_df = build_allocation_frame(strategy_name, df)
+    alloc_df.index = pd.to_datetime(alloc_df.index)
+
+    market_context = {
+        2012: "Post-financial crisis recovery period",
+        2013: "Strong bull market, Fed tapering concerns late year",
+        2014: "Steady bull market, oil price collapse Q4",
+        2015: "China slowdown fears, elevated volatility",
+        2016: "Brexit shock, U.S. election uncertainty, recovery",
+        2017: "Exceptionally low volatility bull market",
+        2018: "Fed tightening cycle, Q4 selloff -20%",
+        2019: "Strong recovery, trade war tensions",
+        2020: "COVID crash -34% then V-shaped recovery",
+        2021: "Meme stock mania, strong bull run",
+        2022: "Nasdaq -33% bear market, Fed rate hike cycle",
+        2023: "AI-driven recovery, banking crisis Q1",
+        2024: "Resilient bull market, rate cut cycle begins",
+        2025: "Continued bull run, macro uncertainty",
+        2026: "Tariff volatility, elevated macro uncertainty",
+    }
+
+    def get_commentary(cash_pct, year, avg_cash):
+        context = market_context.get(year, "")
+        diff = cash_pct - avg_cash
+        if cash_pct >= 60:
+            stance = "Maximum defensive positioning"
+            assessment = "Strategy correctly identified high-risk environment"
+        elif cash_pct >= 50:
+            stance = "High defensive positioning"
+            assessment = "Strategy shifted heavily toward capital preservation"
+        elif cash_pct >= 40:
+            stance = "Moderately defensive positioning"
+            assessment = "Strategy balanced growth with protection"
+        elif cash_pct >= 25:
+            stance = "Balanced positioning"
+            assessment = "Mixed signals — strategy maintained flexible stance"
+        else:
+            stance = "Aggressive risk-on positioning"
+            assessment = "Strategy leaned heavily into growth exposure"
+        if diff >= 15:
+            relative = "significantly more defensive than average"
+        elif diff >= 5:
+            relative = "more defensive than average"
+        elif diff <= -15:
+            relative = "significantly more aggressive than average"
+        elif diff <= -5:
+            relative = "more aggressive than average"
+        else:
+            relative = "near average positioning"
+        return f"{stance}. {assessment}. {relative.capitalize()}. {context}"
+
+    rows = []
+    total_cash_days = 0
+    total_days = 0
+
+    for year in range(2012, 2028):
+        year_df = alloc_df[alloc_df.index.year == year]
+        if len(year_df) == 0:
+            continue
+        yr_total = len(year_df)
+        cash_col = year_df.get("CASH", pd.Series(0.0, index=year_df.index))
+        yr_cash = int((cash_col > 1e-10).sum())
+        yr_cash_pct = yr_cash / yr_total * 100
+        yr_avg_cash = float(cash_col.mean() * 100)
+        total_cash_days += yr_cash
+        total_days += yr_total
+        rows.append({
+            "Year": year,
+            "Trading Days": yr_total,
+            "Days in Cash": yr_cash,
+            "% of Year": round(yr_cash_pct, 1),
+            "Avg Cash Weight": round(yr_avg_cash, 1),
+        })
+
+    df_out = pd.DataFrame(rows)
+    overall_avg = total_cash_days / total_days * 100 if total_days > 0 else 0
+    df_out["Commentary"] = df_out.apply(
+        lambda r: get_commentary(r["% of Year"], r["Year"], overall_avg), axis=1
+    )
+    summary = {
+        "total_days": total_days,
+        "total_cash_days": total_cash_days,
+        "overall_cash_pct": round(overall_avg, 1),
+        "most_defensive_year": int(df_out.loc[df_out["% of Year"].idxmax(), "Year"]),
+        "most_aggressive_year": int(df_out.loc[df_out["% of Year"].idxmin(), "Year"]),
+    }
+    return df_out, summary
+
 def build_trade_reconstruction(strategy_name: str, df: pd.DataFrame, portfolio_value_series: pd.Series, execution_mode: str = "Fractional Shares", start_capital: float = 50000.0) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     alloc_df = build_allocation_frame(strategy_name, df)
     if alloc_df.empty:
@@ -1692,84 +1783,60 @@ if run:
     st.dataframe(dark_dataframe(alloc_log.head(250)), width="stretch")
 
     st.markdown(tooltip_label(
-        "Trade Reconstruction Panel",
-        "Reconstructs each rebalance using the same-day official close for every traded ETF under the Market-on-Close assumption. "
-        "Fractional mode allows exact target weights. Whole-share mode rounds share counts down to integers and carries the remainder as cash. "
-        "This is an audit overlay for the displayed allocations and final value.",
+        "What To Trade Today",
+        "Shows only the trade instructions for the latest available rebalance date in the selected period. "
+        "If the latest date has no rebalance, it will explicitly say there are no trades today. "
+        "Use this as the operational panel for close-execution decisions.",
+        f"Latest available date: {latest_trade_date_str or 'N/A'}",
+        align="left"
+    ), unsafe_allow_html=True)
+
+    if not daily_ticket_df.empty:
+        daily_file = f"ADAPT_daily_trade_tickets_{strategy}_{latest_trade_date_str}_{execution_mode.replace(' ', '_')}.csv"
+        st.download_button(
+            label="Download Today's Trade Tickets CSV",
+            data=ticket_csv_bytes(daily_ticket_df),
+            file_name=daily_file,
+            mime="text/csv",
+            width="stretch",
+        )
+        st.dataframe(dark_dataframe(daily_ticket_df), width="stretch")
+    else:
+        st.info(daily_trade_message)
+
+    render_fill_tracking_panel(
+        daily_ticket_df=daily_ticket_df,
+        strategy_name=strategy,
+        trade_date=latest_trade_date_str,
+        execution_mode=execution_mode,
+    )
+
+    st.markdown(tooltip_label(
+        "Trade Ticket Output",
+        "Creates close-execution trade instructions from the reconstructed rebalance trades. "
+        "BUY/SELL directions are derived from share-count changes. This is the most practical execution layer for manually verifying or placing trades.",
         f"Mode: {execution_mode}",
         align="left"
     ), unsafe_allow_html=True)
 
-    if not trade_summary_df.empty:
-        reconstructed_final = float(final_positions_df["Market Value"].sum()) if not final_positions_df.empty else float("nan")
-        backtest_final = float(eq_series.iloc[-1]) if not eq_series.empty else float("nan")
-        diff = reconstructed_final - backtest_final if pd.notna(reconstructed_final) and pd.notna(backtest_final) else float("nan")
+    ticket_file = f"ADAPT_trade_tickets_{strategy}_{start_date}_to_{end_date}_{execution_mode.replace(' ', '_')}.csv"
+    st.download_button(
+        label="Download Trade Tickets CSV",
+        data=ticket_csv_bytes(trade_ticket_df),
+        file_name=ticket_file,
+        mime="text/csv",
+        width="stretch",
+    )
+    st.dataframe(dark_dataframe(trade_ticket_df), width="stretch")
 
-        drag_pct = (diff / backtest_final) if pd.notna(diff) and pd.notna(backtest_final) and backtest_final != 0 else float("nan")
+    st.markdown("#### Rebalance Summary")
+    st.dataframe(dark_dataframe(trade_summary_fmt), width="stretch")
 
-        x1, x2, x3, x4 = st.columns(4)
-        x1.markdown(metric_card_html("Holdings-Based Final Value", f"${reconstructed_final:,.0f}", ["From reconstructed share counts", f"Mode: {execution_mode}"]), unsafe_allow_html=True)
-        x2.markdown(metric_card_html("Backtest Final Value", f"${backtest_final:,.0f}", ["From ADAPT return stream", "Current dashboard result"]), unsafe_allow_html=True)
-        x3.markdown(metric_card_html("Reconstruction Difference", f"${diff:,.2f}", ["Reconstructed minus backtest", "Whole-share mode may differ due to rounding"]), unsafe_allow_html=True)
-        x4.markdown(metric_card_html("Execution Drag vs Backtest", f"{drag_pct:.4%}", [f"Dollar drag ${diff:,.2f}", "Negative = reconstruction below backtest"]), unsafe_allow_html=True)
+    st.markdown("#### Trade Detail")
+    st.dataframe(dark_dataframe(trade_detail_fmt), width="stretch")
 
-        st.markdown(tooltip_label(
-            "What To Trade Today",
-            "Shows only the trade instructions for the latest available rebalance date in the selected period. "
-            "If the latest date has no rebalance, it will explicitly say there are no trades today. "
-            "Use this as the operational panel for close-execution decisions.",
-            f"Latest available date: {latest_trade_date_str or 'N/A'}",
-            align="left"
-        ), unsafe_allow_html=True)
-
-        if not daily_ticket_df.empty:
-            daily_file = f"ADAPT_daily_trade_tickets_{strategy}_{latest_trade_date_str}_{execution_mode.replace(' ', '_')}.csv"
-            st.download_button(
-                label="Download Today's Trade Tickets CSV",
-                data=ticket_csv_bytes(daily_ticket_df),
-                file_name=daily_file,
-                mime="text/csv",
-                width="stretch",
-            )
-            st.dataframe(dark_dataframe(daily_ticket_df), width="stretch")
-        else:
-            st.info(daily_trade_message)
-
-        render_fill_tracking_panel(
-            daily_ticket_df=daily_ticket_df,
-            strategy_name=strategy,
-            trade_date=latest_trade_date_str,
-            execution_mode=execution_mode,
-        )
-
-        st.markdown(tooltip_label(
-            "Trade Ticket Output",
-            "Creates close-execution trade instructions from the reconstructed rebalance trades. "
-            "BUY/SELL directions are derived from share-count changes. This is the most practical execution layer for manually verifying or placing trades.",
-            f"Mode: {execution_mode}",
-            align="left"
-        ), unsafe_allow_html=True)
-
-        ticket_file = f"ADAPT_trade_tickets_{strategy}_{start_date}_to_{end_date}_{execution_mode.replace(' ', '_')}.csv"
-        st.download_button(
-            label="Download Trade Tickets CSV",
-            data=ticket_csv_bytes(trade_ticket_df),
-            file_name=ticket_file,
-            mime="text/csv",
-            width="stretch",
-        )
-        st.dataframe(dark_dataframe(trade_ticket_df), width="stretch")
-
-        st.markdown("#### Rebalance Summary")
-        st.dataframe(dark_dataframe(trade_summary_fmt), width="stretch")
-
-        st.markdown("#### Trade Detail")
-        st.dataframe(dark_dataframe(trade_detail_fmt), width="stretch")
-
-        st.markdown("#### Final Position Mark-to-Market")
-        st.dataframe(dark_dataframe(final_positions_fmt), width="stretch")
-    else:
-        st.info("No trade reconstruction available for the selected period.")
+    st.markdown("#### Final Position Mark-to-Market")
+    st.dataframe(dark_dataframe(final_positions_fmt), width="stretch")
 
     yearly_df = yearly_return_table(strategy, df["ret"], bench_ret)
     st.markdown("#### Yearly Return Heatmap")
@@ -1783,8 +1850,89 @@ if run:
 
     st.markdown("#### Yearly Returns (%)")
     st.dataframe(dark_dataframe(yearly_df, hide_index=False), width="stretch")
+
+    # ── Cash Positioning Analysis ──────────────────────────────────
+    st.markdown("---")
+    st.markdown("#### Annual Cash Positioning Analysis")
+    st.markdown(
+        "How often the strategy moved to cash each year, with context on market conditions. "
+        "Higher cash % = more defensive. Lower cash % = more aggressive risk-on exposure."
+    )
+
+    cash_df, cash_summary = build_cash_positioning_analysis(strategy, df)
+
+    c1, c2, c3, c4 = st.columns(4)
+    c1.markdown(metric_card_html(
+        "Overall Cash Days",
+        f"{cash_summary['overall_cash_pct']}%",
+        [f"{cash_summary['total_cash_days']} of {cash_summary['total_days']} days"]
+    ), unsafe_allow_html=True)
+    c2.markdown(metric_card_html(
+        "Most Defensive Year",
+        str(cash_summary['most_defensive_year']),
+        [f"{cash_df.loc[cash_df['Year']==cash_summary['most_defensive_year'], '% of Year'].values[0]}% in cash"]
+    ), unsafe_allow_html=True)
+    c3.markdown(metric_card_html(
+        "Most Aggressive Year",
+        str(cash_summary['most_aggressive_year']),
+        [f"{cash_df.loc[cash_df['Year']==cash_summary['most_aggressive_year'], '% of Year'].values[0]}% in cash"]
+    ), unsafe_allow_html=True)
+    c4.markdown(metric_card_html(
+        "Avg Cash Weight",
+        f"{cash_df['Avg Cash Weight'].mean():.1f}%",
+        ["When cash position held"]
+    ), unsafe_allow_html=True)
+
+    import plotly.graph_objects as go
+    avg_pct = cash_summary['overall_cash_pct']
+    colors = ["#ef4444" if p >= 55 else "#f97316" if p >= 40 else "#eab308" if p >= 25 else "#22c55e"
+              for p in cash_df["% of Year"]]
+    fig_cash = go.Figure()
+    fig_cash.add_trace(go.Bar(
+        x=cash_df["Year"].astype(str),
+        y=cash_df["% of Year"],
+        marker_color=colors,
+        text=cash_df["% of Year"].map(lambda x: f"{x:.0f}%"),
+        textposition="outside",
+        hovertemplate="<b>%{x}</b><br>Cash days: %{y:.1f}%<extra></extra>",
+    ))
+    fig_cash.add_hline(
+        y=avg_pct,
+        line_dash="dash",
+        line_color="#94a3b8",
+        annotation_text=f"Average {avg_pct:.1f}%",
+        annotation_position="top right",
+    )
+    fig_cash.update_layout(
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        font_color="#dbe5f3",
+        height=350,
+        margin=dict(t=40, b=40, l=20, r=20),
+        xaxis=dict(showgrid=False),
+        yaxis=dict(showgrid=True, gridcolor="#1e3a5f", ticksuffix="%", range=[0, 105]),
+        showlegend=False,
+    )
+    st.plotly_chart(fig_cash, use_container_width=True)
+    st.markdown(
+        '<div style="display:flex;gap:20px;margin-bottom:12px;font-size:0.85rem;">' +
+        '<span style="color:#22c55e">■ Aggressive (&lt;25%)</span>' +
+        '<span style="color:#eab308">■ Balanced (25-40%)</span>' +
+        '<span style="color:#f97316">■ Moderately Defensive (40-55%)</span>' +
+        '<span style="color:#ef4444">■ Max Defensive (&gt;55%)</span>' +
+        '</div>',
+        unsafe_allow_html=True
+    )
+    st.markdown("##### Year-by-Year Breakdown")
+    display_cash_df = cash_df[["Year", "Trading Days", "Days in Cash", "% of Year", "Avg Cash Weight", "Commentary"]].copy()
+    display_cash_df["% of Year"] = display_cash_df["% of Year"].map(lambda x: f"{x:.1f}%")
+    display_cash_df["Avg Cash Weight"] = display_cash_df["Avg Cash Weight"].map(lambda x: f"{x:.1f}%")
+    st.dataframe(dark_dataframe(display_cash_df), width="stretch")
+
 else:
     st.info("Run Backtest by clicking the arrow on top left corner to open & close the dashboard on left side of page. Here you can input your personal variables.")
+
+
 
 st.markdown("---")
 st.markdown(
